@@ -1,0 +1,142 @@
+# Prompt Configuration for Discord Habit Bot
+# 
+# This file defines scheduled prompts that will be sent to Discord channels
+# to remind users about their habits. Each prompt can have custom timing,
+# targeting, and message content.
+
+prompts:
+  # Morning motivation
+  - name: "Morning Kickstart"
+    cron: "0 7 * * *"  # Daily at 7 AM
+    timezone: "UTC"
+    message: |
+      🌅 **Good morning, habit builders!**
+      
+      Time to start your day strong! What's the first habit you'll tackle today?
+      
+      💪 Popular morning habits:
+      • Meditation or mindfulness
+      • Exercise or stretching  
+      • Reading or journaling
+      • Healthy breakfast
+      
+      React with ✅ when you complete a habit!
+    channel_id: null  # Will use default channel
+    target_users: null  # All users
+
+  # Exercise reminder
+  - name: "Exercise Time"
+    cron: "0 18 * * 1,2,3,4,5"  # Weekdays at 6 PM
+    timezone: "UTC" 
+    message: |
+      🏋️ **Time to move your body!**
+      
+      It's evening exercise time! Whether it's a full workout, a walk, or some stretching,
+      your body will thank you.
+      
+      🎯 Quick options:
+      • 20-minute workout
+      • Evening walk
+      • Yoga session
+      • Sports activity
+      
+      React with ✅ when you're done exercising!
+    channel_id: null
+    target_users: null
+
+  # Mindfulness check-in
+  - name: "Mindfulness Moment" 
+    cron: "0 12 * * *"  # Daily at noon
+    timezone: "UTC"
+    message: |
+      🧘 **Midday mindfulness check-in**
+      
+      Take a moment to pause and center yourself. How are you feeling right now?
+      
+      ✨ Quick mindfulness options:
+      • 5-minute meditation
+      • Deep breathing exercise
+      • Gratitude reflection
+      • Mindful walking
+      
+      React with ✅ after your mindful moment!
+    channel_id: null
+    target_users: null
+
+  # Evening reflection
+  - name: "Evening Reflection"
+    cron: "0 21 * * *"  # Daily at 9 PM
+    timezone: "UTC"
+    message: |
+      🌙 **Evening reflection time**
+      
+      As the day winds down, take a moment to reflect on your accomplishments.
+      
+      📝 Consider these questions:
+      • What went well today?
+      • What habits did you maintain?
+      • What are you grateful for?
+      • How can tomorrow be even better?
+      
+      React with ✅ if you took time to reflect!
+    channel_id: null
+    target_users: null
+
+  # Weekly goal setting
+  - name: "Weekly Planning"
+    cron: "0 9 * * 1"  # Mondays at 9 AM
+    timezone: "UTC"
+    message: |
+      📋 **New week, new opportunities!**
+      
+      It's Monday morning - time to set your intentions for the week ahead.
+      
+      🎯 This week, I will focus on:
+      • Which habits are most important?
+      • What's one new thing you'll try?
+      • How will you stay consistent?
+      • What support do you need?
+      
+      React with ✅ when you've set your weekly goals!
+    channel_id: null
+    target_users: null
+
+  # Hydration reminder
+  - name: "Hydration Check"
+    cron: "0 */3 * * *"  # Every 3 hours
+    timezone: "UTC"
+    message: |
+      💧 **Hydration reminder!**
+      
+      When's the last time you had some water? Your body needs regular hydration
+      to function at its best.
+      
+      🥤 Quick hydration boost:
+      • Glass of water
+      • Herbal tea
+      • Fruit-infused water
+      • Coconut water
+      
+      React with ✅ after you hydrate!
+    channel_id: null
+    target_users: null
+
+# Configuration settings
+settings:
+  default_timezone: "UTC"
+  default_channel_id: null  # Will be set during bot configuration
+  enable_reactions: true
+  reaction_emoji: "✅"
+  auto_delete_old_prompts: false  # Keep prompts for history
+  prompt_embed_color: "#00FF7F"  # Spring green
+  
+# Habit keywords for automatic detection in prompts
+habit_keywords:
+  exercise: ["exercise", "workout", "gym", "run", "walk", "yoga", "stretch", "sport"]
+  meditation: ["meditation", "mindfulness", "breathe", "zen", "calm", "center"]
+  reading: ["read", "book", "study", "learn", "research"]
+  hydration: ["water", "hydrate", "drink", "fluid"]
+  nutrition: ["eat", "meal", "nutrition", "healthy", "food"]
+  sleep: ["sleep", "rest", "bed", "tired", "recover"]
+  creativity: ["create", "write", "draw", "music", "art", "design"]
+  social: ["connect", "call", "meet", "friend", "family", "social"]
