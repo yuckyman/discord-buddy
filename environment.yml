@@ -1,0 +1,20 @@
+name: habit-bot
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - sqlalchemy>=2.0
+  - pyyaml
+  - jinja2
+  - python-dotenv
+  - pip
+  # Note: Some packages may not be available in conda channels, so we'll use pip for those
+  - pip:
+    - discord.py>=2.3.0
+    - APScheduler>=3.10.0
+    - alembic>=1.12.0
+    - aiosqlite>=0.19.0  # For async SQLite support
+    - ankiconnect>=1.0.0  # Anki-Connect client
+    - pytest>=7.0.0  # For testing
+    - pytest-asyncio>=0.21.0  # For async testing
