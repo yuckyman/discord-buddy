@@ -109,6 +109,8 @@ class HabitBot(commands.Bot):
             await self.load_extension("cogs.stats_commands")
             await self.load_extension("cogs.admin_commands")
             await self.load_extension("cogs.quiz_commands")
+            await self.load_extension("cogs.obsidian_commands")
+            await self.load_extension("cogs.help_commands")
             
             # Sync application commands (slash commands)
             synced = await self.tree.sync()
@@ -116,6 +118,9 @@ class HabitBot(commands.Bot):
             
             # Start scheduled services
             await self.services["prompt"].start_scheduler()
+            
+            # Run startup sequence (create default habits and send notification)
+            await self._run_startup_sequence()
             
             self.startup_time = datetime.utcnow()
             logger.info("Bot initialization completed successfully")
@@ -219,6 +224,31 @@ class HabitBot(commands.Bot):
             
         except Exception as e:
             logger.error(f"Error during shutdown: {e}")
+    
+    async def _run_startup_sequence(self) -> None:
+        """Run startup sequence including default habits and notifications."""
+        try:
+            from startup_habits import run_startup_sequence
+            
+            logger.info("Running startup sequence...")
+            results = await run_startup_sequence(self, send_notification=True)
+            
+            if results.get("success"):
+                habits_created = results.get("habits_created", 0)
+                notification_sent = results.get("notification_sent", False)
+                
+                if habits_created > 0:
+                    logger.info(f"Created {habits_created} default habits")
+                
+                if notification_sent:
+                    logger.info("Startup notification sent to Discord")
+                else:
+                    logger.warning("Failed to send startup notification")
+            else:
+                logger.error(f"Startup sequence failed: {results.get('error', 'Unknown error')}")
+                
+        except Exception as e:
+            logger.error(f"Error running startup sequence: {e}")
     
     def run_bot(self) -> None:
         """Run the bot with proper error handling."""

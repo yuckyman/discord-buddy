@@ -1,0 +1,115 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Database files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+log/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backups and archives
+*.tar.gz
+*.zip
+*.backup
+*backup*
+
+# Alembic versions (keep structure but not specific migrations)
+alembic/versions/*.py
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Discord bot specific
+habit_bot.db*
+*.token
+bot_token.txt
+
+# Obsidian vault paths (could contain personal data)
+vault/
+
+# SSH keys and certificates
+*.pem
+*.key
+*.crt
+*.cert

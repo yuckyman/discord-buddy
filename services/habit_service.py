@@ -6,6 +6,7 @@ Enhanced with natural language processing for dynamic habit management.
 """
 
 import logging
+import os
 import re
 from datetime import datetime, date, time
 from typing import Optional, List, Tuple, Dict, Any
@@ -238,7 +239,7 @@ class HabitService:
                 name=name,
                 prompt_text=prompt_text,
                 cron_expression=cron_expression,
-                timezone="UTC"  # TODO: Make this configurable
+                timezone=os.getenv("TIMEZONE", "UTC")  # Use environment variable or default to UTC
             )
             session.add(prompt_schedule)
             await session.commit()

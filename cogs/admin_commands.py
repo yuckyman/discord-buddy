@@ -63,18 +63,6 @@ class AdminCommands(commands.Cog):
             await ctx.send(f"❌ Failed to sync commands: {e}")
 
 
-class QuizCommands(commands.Cog):
-    """Quiz and review commands."""
-    
-    def __init__(self, bot):
-        self.bot = bot
-    
-    @commands.command(name="quiz")
-    async def quiz(self, ctx):
-        """Start a quiz session."""
-        await ctx.send("🧠 Quiz system coming soon!")
-
-
 async def setup(bot):
     """Setup function for loading the cogs."""
     await bot.add_cog(AdminCommands(bot))

@@ -5,81 +5,137 @@
 # targeting, and message content.
 
 prompts:
+  # Startup motivation (triggers on bot startup)
+  - name: "Bot Startup Motivation"
+    cron: "startup"  # Special keyword for startup trigger
+    timezone: "America/New_York"
+    message: |
+      🚀 **habit bot is back online and ready to help!**
+      
+      welcome back, habit builders! time to pick up where you left off.
+      
+      🎯 **quick start suggestions:**
+      • create a new habit: `!create habit meditation 10 minutes daily`
+      • log a recent completion: `!log exercise - morning workout done!`
+      • check your progress: `!today`
+      • view your stats: `!stats`
+      
+      let's make today count! what habit will you tackle first? 💪
+    channel_id: 954466311596027984  # #habits channel
+    target_users: null  # All users
+
   # Morning motivation
   - name: "Morning Kickstart"
-    cron: "0 7 * * *"  # Daily at 7 AM
-    timezone: "UTC"
+    cron: "0 8 * * *"  # Daily at 8 AM
+    timezone: "America/New_York"
     message: |
-      🌅 **Good morning, habit builders!**
+      🌅 **good morning, habit builders!**
       
-      Time to start your day strong! What's the first habit you'll tackle today?
+      time to start your day strong! what's the first habit you'll tackle today?
       
-      💪 Popular morning habits:
-      • Meditation or mindfulness
-      • Exercise or stretching  
-      • Reading or journaling
-      • Healthy breakfast
+      💪 popular morning habits:
+      • meditation or mindfulness
+      • exercise or stretching  
+      • reading or journaling
+      • healthy breakfast
       
-      React with ✅ when you complete a habit!
-    channel_id: null  # Will use default channel
+      react with ✅ when you complete a habit!
+    channel_id: 1392910044923953172  # #reminders channel
     target_users: null  # All users
 
   # Exercise reminder
   - name: "Exercise Time"
     cron: "0 18 * * 1,2,3,4,5"  # Weekdays at 6 PM
-    timezone: "UTC" 
+    timezone: "America/New_York" 
     message: |
-      🏋️ **Time to move your body!**
+      🏋️ **time to move your body!**
       
-      It's evening exercise time! Whether it's a full workout, a walk, or some stretching,
+      it's evening exercise time! whether it's a full workout, a walk, or some stretching,
       your body will thank you.
       
-      🎯 Quick options:
+      🎯 quick options:
       • 20-minute workout
-      • Evening walk
-      • Yoga session
-      • Sports activity
+      • evening walk
+      • yoga session
+      • sports activity
       
-      React with ✅ when you're done exercising!
-    channel_id: null
+      react with ✅ when you're done exercising!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  # Progress Check (to #progress channel)
+  - name: "Daily Progress Check"
+    cron: "0 20 * * *"  # Daily at 8 PM
+    timezone: "America/New_York"
+    message: |
+      📊 **daily progress check!**
+      
+      how did your habits go today? share your wins and challenges!
+      
+      🎯 **quick log commands:**
+      • `!log meditation - 10 minutes of peace`
+      • `!log exercise - crushed my workout!`
+      • `!today` - see your progress
+      • `!stats` - view your achievements
+      
+      every small step counts! 🌟
+    channel_id: 1392910058840653834  # #progress channel
+    target_users: null
+
+  # Weekly Report (to #reports channel)
+  - name: "Weekly Habit Report"
+    cron: "0 9 * * 0"  # Sundays at 9 AM
+    timezone: "America/New_York"
+    message: |
+      📈 **weekly habit report time!**
+      
+      time to reflect on this week's habit journey:
+      
+      🎯 **weekly commands:**
+      • `!stats` - view your weekly progress
+      • `!leaderboard` - see who's crushing it
+      • `!rewards` - check your recent achievements
+      
+      what habit will you focus on improving this week? 💪
+    channel_id: 1392911676008960060  # #reports channel
     target_users: null
 
   # Mindfulness check-in
   - name: "Mindfulness Moment" 
     cron: "0 12 * * *"  # Daily at noon
-    timezone: "UTC"
+    timezone: "America/New_York"
     message: |
-      🧘 **Midday mindfulness check-in**
+      🧘 **midday mindfulness check-in**
       
-      Take a moment to pause and center yourself. How are you feeling right now?
+      take a moment to pause and center yourself. how are you feeling right now?
       
-      ✨ Quick mindfulness options:
+      ✨ quick mindfulness options:
       • 5-minute meditation
-      • Deep breathing exercise
-      • Gratitude reflection
-      • Mindful walking
+      • deep breathing exercise
+      • gratitude reflection
+      • mindful walking
       
-      React with ✅ after your mindful moment!
-    channel_id: null
+      react with ✅ after your mindful moment!
+    channel_id: 1392910044923953172  # #reminders channel
     target_users: null
 
   # Evening reflection
   - name: "Evening Reflection"
     cron: "0 21 * * *"  # Daily at 9 PM
-    timezone: "UTC"
+    timezone: "America/New_York"
     message: |
-      🌙 **Evening reflection time**
+      🌙 **evening reflection time**
       
-      As the day winds down, take a moment to reflect on your accomplishments.
+      as the day winds down, take a moment to reflect on your accomplishments.
       
-      📝 Consider these questions:
-      • What went well today?
-      • What habits did you maintain?
-      • What are you grateful for?
-      • How can tomorrow be even better?
+      📝 consider these questions:
+      • what went well today?
+      • what habits did you maintain?
+      • what are you grateful for?
+      • how can tomorrow be even better?
       
-      React with ✅ if you took time to reflect!
-    channel_id: null
+      use `!dnote create` to save reflections to your obsidian journal! 📖
+    channel_id: 954466311596027984  # #habits channel
     target_users: null
 
   # Weekly goal setting
@@ -87,17 +143,17 @@ prompts:
     cron: "0 9 * * 1"  # Mondays at 9 AM
     timezone: "UTC"
     message: |
-      📋 **New week, new opportunities!**
+      📋 **new week, new opportunities!**
       
-      It's Monday morning - time to set your intentions for the week ahead.
+      it's monday morning - time to set your intentions for the week ahead.
       
-      🎯 This week, I will focus on:
-      • Which habits are most important?
-      • What's one new thing you'll try?
-      • How will you stay consistent?
-      • What support do you need?
+      🎯 this week, i will focus on:
+      • which habits are most important?
+      • what's one new thing you'll try?
+      • how will you stay consistent?
+      • what support do you need?
       
-      React with ✅ when you've set your weekly goals!
+      react with ✅ when you've set your weekly goals!
     channel_id: null
     target_users: null
 
@@ -106,18 +162,18 @@ prompts:
     cron: "0 */3 * * *"  # Every 3 hours
     timezone: "UTC"
     message: |
-      💧 **Hydration reminder!**
+      💧 **hydration reminder!**
       
-      When's the last time you had some water? Your body needs regular hydration
+      when's the last time you had some water? your body needs regular hydration
       to function at its best.
       
-      🥤 Quick hydration boost:
-      • Glass of water
-      • Herbal tea
-      • Fruit-infused water
-      • Coconut water
+      🥤 quick hydration boost:
+      • glass of water
+      • herbal tea
+      • fruit-infused water
+      • coconut water
       
-      React with ✅ after you hydrate!
+      react with ✅ after you hydrate!
     channel_id: null
     target_users: null
 

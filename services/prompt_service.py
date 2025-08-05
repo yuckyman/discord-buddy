@@ -226,7 +226,7 @@ class PromptService:
             # Create new reaction record
             reaction = PromptReaction(
                 user_id=user_id,
-                prompt_schedule_id=1,  # TODO: Extract from message or default
+                prompt_schedule_id=1,  # Default prompt schedule - could be extracted from message metadata in future
                 message_id=message_id,
                 channel_id=channel_id,
                 reaction_emoji=emoji,

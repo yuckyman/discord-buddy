@@ -1,15 +1,16 @@
 [Unit]
-Description=Discord Habit Bot
+Description=Discord Habit Bot - Gamified Habit Tracking
 After=network.target
-Wants=network-online.target
+Wants=network.target
 
 [Service]
 Type=simple
-User=habitbot
-Group=habitbot
-WorkingDirectory=/opt/discord-habit-bot
-Environment=PATH=/opt/miniconda3/envs/habit-bot/bin
-ExecStart=/opt/miniconda3/envs/habit-bot/bin/python /opt/discord-habit-bot/bot.py
+User=ian
+Group=ian
+WorkingDirectory=/home/ian/scripts/discord-buddy
+Environment=PATH=/home/ian/miniconda3/envs/habit-bot/bin:/usr/local/bin:/usr/bin:/bin
+ExecStartPre=/bin/bash -c 'source /home/ian/miniconda3/etc/profile.d/conda.sh && conda activate habit-bot'
+ExecStart=/home/ian/miniconda3/envs/habit-bot/bin/python bot.py
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -19,11 +20,9 @@ StandardError=journal
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
+ReadWritePaths=/home/ian/scripts/discord-buddy
 ProtectHome=true
-ReadWritePaths=/opt/discord-habit-bot
-
-# Environment file
-EnvironmentFile=/opt/discord-habit-bot/.env
+PrivateDevices=true
 
 [Install]
 WantedBy=multi-user.target
