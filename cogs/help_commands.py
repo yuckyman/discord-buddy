@@ -31,10 +31,12 @@ class HelpCommands(commands.Cog):
             name="🎯 Basic Commands",
             value="""
 `!create meditation 10 minutes daily` - Create habit
+`!add_habit weekly "Meal Prep"` - Use templates
 `!log exercise - great workout!` - Log completion
 `!today` - Today's progress
 `!stats` - Your statistics
 `!habits` - List all habits
+`!sync_default_habits` - Update to latest habits
             """,
             inline=True
         )

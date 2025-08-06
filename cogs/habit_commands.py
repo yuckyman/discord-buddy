@@ -506,6 +506,87 @@ class HabitCommands(commands.Cog):
             logger.error(f"Templates command error: {e}")
             await ctx.send("❌ Error showing templates. Please try again.")
     
+    @commands.command(name="sync_default_habits", aliases=["update_habits", "create_missing"])
+    async def sync_default_habits(self, ctx):
+        """Create any missing default habits from the latest updates."""
+        try:
+            from startup_habits import StartupHabits
+            startup = StartupHabits(self.bot)
+            
+            # Get existing habits
+            existing_habits = await self.habit_service.get_all_habits()
+            existing_names = {habit.name.lower() for habit in existing_habits}
+            
+            # Check which default habits are missing
+            missing_habits = []
+            created_habits = []
+            
+            for name, description, xp, category, schedule in startup.default_habits:
+                if name.lower() not in existing_names:
+                    missing_habits.append((name, description, xp, category, schedule))
+            
+            if not missing_habits:
+                embed = discord.Embed(
+                    title="✅ All habits up to date!",
+                    description="all default habits are already created in the system.",
+                    color=discord.Color.green()
+                )
+                await ctx.send(embed=embed)
+                return
+            
+            # Create missing habits
+            for name, description, xp, category, schedule in missing_habits:
+                try:
+                    # Create the habit
+                    habit = await self.habit_service.create_habit(
+                        name=name,
+                        description=description,
+                        base_xp=xp,
+                        category=category
+                    )
+                    
+                    if habit:
+                        created_habits.append(name)
+                        
+                        # Schedule if provided
+                        if schedule:
+                            try:
+                                await self.habit_service.schedule_habit_reminder(
+                                    habit_name=name,
+                                    cron_expression=schedule
+                                )
+                            except Exception as e:
+                                logger.warning(f"Failed to schedule {name}: {e}")
+                        
+                except Exception as e:
+                    logger.error(f"Failed to create habit {name}: {e}")
+            
+            # Send results
+            embed = discord.Embed(
+                title="🎯 Default Habits Synced!",
+                description=f"created {len(created_habits)} new habits from latest updates!",
+                color=discord.Color.green()
+            )
+            
+            if created_habits:
+                embed.add_field(
+                    name="✅ newly created habits",
+                    value="\n".join([f"• {name}" for name in created_habits]),
+                    inline=False
+                )
+            
+            embed.add_field(
+                name="🚀 next steps",
+                value="use `!habits` to see all available habits including the new ones!",
+                inline=False
+            )
+            
+            await ctx.send(embed=embed)
+            
+        except Exception as e:
+            logger.error(f"Sync default habits error: {e}")
+            await ctx.send("❌ Error syncing default habits. Please try again.")
+    
     # === PROGRESS TRACKING ===
     
     @commands.command(name="today", aliases=["progress", "daily"])

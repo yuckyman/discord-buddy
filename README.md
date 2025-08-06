@@ -280,25 +280,32 @@ cd /opt/discord-habit-bot
 
 ## 🏗️ Architecture
 
+The Discord Habit Bot uses a clean domain-driven architecture with well-defined communication patterns between components.
+
+### 📋 Documentation
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Complete domain architecture and information flow
+- **[API.md](API.md)** - Service layer APIs and standardized interfaces  
+- **[DATA_FLOWS.md](DATA_FLOWS.md)** - Data transformation and cross-domain communication
+
 ### Core Components
 - **Bot Core** (`bot.py`): Main Discord.py bot with service coordination
 - **Database Layer** (`database.py`, `models.py`): SQLAlchemy async ORM
 - **Service Layer** (`services/`): Business logic and feature implementation
 - **Command Layer** (`cogs/`): Discord command handlers
-- **Scheduler** (`prompt_service.py`): APScheduler for automated tasks
+- **Configuration** (`configs/`, `startup_habits.py`): Templates and system settings
 
 ### Key Services
-- **HabitService**: Habit CRUD, natural language parsing, scheduling
-- **UserService**: User management, XP/level calculations
-- **RewardService**: RNG loot system, inventory management
-- **StreakService**: Streak tracking, milestone bonuses
-- **PromptService**: Scheduled reminders, reaction handling
+- **HabitService**: Habit CRUD, natural language parsing, multi-scale templates
+- **UserService**: User management, XP/level calculations, leaderboards
+- **RewardService**: RNG loot system, inventory management, gamification
+- **StreakService**: Streak tracking, milestone bonuses, progress analytics
+- **PromptService**: Scheduled reminders, reaction handling, automation
 
-### Database Design
-- **Async SQLAlchemy**: Modern async/await patterns
-- **Alembic Migrations**: Version-controlled schema changes
-- **Soft Deletes**: Data preservation with deactivation flags
-- **Comprehensive Relationships**: Foreign keys and proper joins
+### Multi-Domain Communication
+- **Clean Interfaces**: Standardized service APIs with type hints
+- **Data Consistency**: Validated transformations between domains
+- **Error Handling**: Structured error responses with user guidance
+- **Extensibility**: Template system for easy feature additions
 
 ## 🔧 Configuration
 

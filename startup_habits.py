@@ -10,6 +10,7 @@ from typing import List, Tuple
 from services.habit_service import HabitService
 from services.user_service import UserService
 from database import db_manager
+from database import db_manager
 
 logger = logging.getLogger(__name__)
 
