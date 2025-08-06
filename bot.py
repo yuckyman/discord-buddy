@@ -190,6 +190,14 @@ class HabitBot(commands.Bot):
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError) -> None:
         """Global error handler for commands."""
         if isinstance(error, commands.CommandNotFound):
+            # Check if this command is meant for the other bot
+            command_name = ctx.message.content.split()[0][1:].lower()  # Remove prefix and get command
+            excluded_commands = ["add", "brief"]  # Commands for the other bot
+            
+            if command_name in excluded_commands:
+                # Silently ignore commands meant for the other bot
+                return
+            
             # Don't respond to unknown commands to avoid spam
             return
         elif isinstance(error, commands.MissingRequiredArgument):

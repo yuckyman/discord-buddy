@@ -23,15 +23,121 @@ class StartupHabits:
         self.user_service = UserService(db_manager)
         
         # Default habits to create on first run
+        # Format: (name, description, base_xp, category, cron_expression)
         self.default_habits = [
+            # Daily habits
             ("Morning Meditation", "Start your day with mindfulness", 15, "wellness", "0 7 * * *"),
             ("Daily Exercise", "Physical activity for health", 20, "fitness", "0 18 * * *"),
+            ("Push-ups", "Track your daily push-up count", 15, "fitness", "0 19 * * *"),
             ("Read for Learning", "Expand your knowledge", 12, "learning", "0 20 * * *"),
             ("Drink Water", "Stay hydrated throughout the day", 5, "wellness", "0 */2 * * *"),
             ("Sleep Early", "Good sleep hygiene", 10, "wellness", "0 22 * * *"),
             ("Gratitude Journal", "Write 3 things you're grateful for", 8, "wellness", "0 21 * * *"),
             ("Code Review", "Review and improve coding skills", 15, "learning", "0 9 * * 1,2,3,4,5"),
+            
+            # Weekly habits
+            ("Laundry", "Do weekly laundry", 25, "wellness", "0 10 * * 0"),  # Sunday 10am
+            ("Exercise 3x Weekly", "Complete 3 exercise sessions this week", 60, "fitness", "0 8 * * 1"),  # Monday reminder
+            ("Vacuum", "Vacuum living spaces", 20, "wellness", "0 14 * * 6"),  # Saturday 2pm
+            ("Groceries", "Weekly grocery shopping", 30, "wellness", "0 11 * * 0"),  # Sunday 11am
+            
+            # Monthly habits  
+            ("Change Sheets", "Change bed sheets and pillowcases", 40, "wellness", "0 9 1 * *"),  # 1st of month, 9am
+            ("Clean Bathroom", "Deep clean bathroom", 50, "wellness", "0 10 15 * *"),  # 15th of month, 10am
+            ("Clean Car", "Wash and clean car interior", 45, "wellness", "0 9 28 * *"),  # 28th of month, 9am
+            
+            # Seasonal habits (quarterly)
+            ("Clean Wardrobe", "Organize and declutter wardrobe", 80, "wellness", "0 10 1 1,4,7,10 *"),  # Jan/Apr/Jul/Oct 1st
+            ("Update Resume", "Review and update resume/CV", 75, "learning", "0 14 15 3,6,9,12 *"),  # Mar/Jun/Sep/Dec 15th
         ]
+        
+        # Habit templates for easy addition of new multi-scale habits
+        self.habit_templates = {
+            "daily": {
+                "cron_pattern": "0 {hour} * * *",
+                "default_hour": 9,
+                "base_xp": 15,
+                "examples": ["Morning routine", "Evening reflection", "Daily walk"]
+            },
+            "weekly": {
+                "cron_pattern": "0 {hour} * * {day}",  # day: 0=Sunday, 1=Monday, etc.
+                "default_hour": 10,
+                "default_day": 0,  # Sunday
+                "base_xp": 30,
+                "examples": ["Meal prep", "Grocery shopping", "Cleaning"]
+            },
+            "monthly": {
+                "cron_pattern": "0 {hour} {day} * *",  # day: 1-28 safe for all months
+                "default_hour": 9,
+                "default_day": 1,  # 1st of month
+                "base_xp": 50,
+                "examples": ["Bill payments", "Deep cleaning", "Monthly review"]
+            },
+            "quarterly": {
+                "cron_pattern": "0 {hour} {day} {months} *",  # months: 1,4,7,10 for quarters
+                "default_hour": 10,
+                "default_day": 1,
+                "default_months": "1,4,7,10",
+                "base_xp": 80,
+                "examples": ["Seasonal wardrobe change", "Goal review", "Equipment maintenance"]
+            },
+            "yearly": {
+                "cron_pattern": "0 {hour} {day} {month} *",
+                "default_hour": 9,
+                "default_day": 1,
+                "default_month": 1,  # January
+                "base_xp": 100,
+                "examples": ["Annual health checkup", "Tax preparation", "Year-end review"]
+            }
+        }
+    
+    def create_habit_from_template(self, name: str, description: str, 
+                                 template_type: str, category: str = "wellness",
+                                 **kwargs) -> tuple:
+        """Create a habit using predefined templates.
+        
+        Args:
+            name: Habit name
+            description: Habit description  
+            template_type: Type of template (daily, weekly, monthly, quarterly, yearly)
+            category: Habit category
+            **kwargs: Template-specific parameters (hour, day, month, etc.)
+            
+        Returns:
+            Tuple of (name, description, xp, category, cron_expression)
+        """
+        if template_type not in self.habit_templates:
+            raise ValueError(f"Unknown template type: {template_type}")
+        
+        template = self.habit_templates[template_type]
+        
+        # Use provided values or defaults
+        hour = kwargs.get("hour", template["default_hour"])
+        base_xp = kwargs.get("xp", template["base_xp"])
+        
+        # Build cron expression based on template type
+        if template_type == "daily":
+            cron = template["cron_pattern"].format(hour=hour)
+            
+        elif template_type == "weekly":
+            day = kwargs.get("day", template["default_day"])
+            cron = template["cron_pattern"].format(hour=hour, day=day)
+            
+        elif template_type == "monthly":
+            day = kwargs.get("day", template["default_day"])
+            cron = template["cron_pattern"].format(hour=hour, day=day)
+            
+        elif template_type == "quarterly":
+            day = kwargs.get("day", template["default_day"])
+            months = kwargs.get("months", template["default_months"])
+            cron = template["cron_pattern"].format(hour=hour, day=day, months=months)
+            
+        elif template_type == "yearly":
+            day = kwargs.get("day", template["default_day"])
+            month = kwargs.get("month", template["default_month"])
+            cron = template["cron_pattern"].format(hour=hour, day=day, month=month)
+        
+        return (name, description, base_xp, category, cron)
     
     async def send_startup_notification(self, channel_id: int = None) -> bool:
         """Send startup notification to Discord channel."""

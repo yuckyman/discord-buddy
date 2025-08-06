@@ -266,6 +266,70 @@ class StatsCommands(commands.Cog):
         
         filled = int((current / total) * length)
         return "▰" * filled + "▱" * (length - filled)
+    
+    @commands.command(name="pushups", aliases=["push", "pushup_stats"])
+    async def pushup_stats(self, ctx, user: Optional[discord.Member] = None):
+        """Show detailed push-up statistics."""
+        target_user = user or ctx.author
+        
+        try:
+            # Get user from database
+            db_user = await self.user_service.get_or_create_user(
+                str(target_user.id), target_user.display_name
+            )
+            
+            # Get push-up statistics
+            stats = await self.habit_service.get_habit_count_stats(db_user.id, "Push-ups")
+            
+            if "error" in stats:
+                await ctx.send(f"❌ {stats['error']}")
+                return
+            
+            # Create embed
+            embed = discord.Embed(
+                title=f"💪 {target_user.display_name}'s Push-up Stats",
+                description="your push-up journey so far!",
+                color=0x00ff88
+            )
+            
+            # Main stats
+            embed.add_field(
+                name="📊 overall stats",
+                value=f"""
+**total push-ups:** {stats['total_count']:,}
+**sessions logged:** {stats['total_sessions']}
+**average per session:** {stats['average']}
+**personal best:** {stats['best']}
+**lowest session:** {stats['worst']}
+                """,
+                inline=False
+            )
+            
+            # Recent sessions
+            if stats['recent_logs']:
+                recent = []
+                for log in stats['recent_logs'][:5]:  # Show last 5
+                    recent.append(f"**{log['date']}:** {log['count']} push-ups")
+                
+                embed.add_field(
+                    name="📈 recent sessions",
+                    value="\n".join(recent),
+                    inline=False
+                )
+            
+            # Tips
+            embed.add_field(
+                name="💡 tip",
+                value="log with: `!log push-ups - 32 feeling strong!`",
+                inline=False
+            )
+            
+            embed.set_footer(text="💪 keep pushing! every rep counts")
+            await ctx.send(embed=embed)
+            
+        except Exception as e:
+            logger.error(f"Pushup stats error: {e}")
+            await ctx.send("❌ error retrieving push-up stats. please try again.")
 
 
 async def setup(bot):

@@ -10,7 +10,7 @@ import os
 import re
 from datetime import datetime, date, time
 from typing import Optional, List, Tuple, Dict, Any
-from sqlalchemy import select, and_, func
+from sqlalchemy import select, and_, func, desc
 from sqlalchemy.exc import IntegrityError
 from models import Habit, HabitLog, User, PromptSchedule
 from database import DatabaseManager
@@ -594,3 +594,105 @@ class HabitService:
             
             logger.info(f"Deactivated habit: {habit.name}")
             return True
+    
+    def extract_count_from_notes(self, notes: str) -> Optional[int]:
+        """Extract numeric count from habit notes.
+        
+        Examples:
+        - "32 push-ups" -> 32
+        - "did 45 today" -> 45  
+        - "completed 100" -> 100
+        - "great workout" -> None
+        
+        Args:
+            notes: The notes string to parse
+            
+        Returns:
+            Extracted count or None if no count found
+        """
+        if not notes:
+            return None
+            
+        # Patterns to match numbers in notes
+        patterns = [
+            r'(\d+)\s*push[-\s]?ups?',  # "32 push-ups", "32 pushups"
+            r'did\s+(\d+)',             # "did 45"
+            r'completed\s+(\d+)',       # "completed 100" 
+            r'^(\d+)',                  # "32 today"
+            r'(\d+)\s*today',           # "45 today"
+            r'(\d+)\s*total',           # "67 total"
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, notes.lower())
+            if match:
+                try:
+                    return int(match.group(1))
+                except ValueError:
+                    continue
+                    
+        return None
+    
+    async def get_habit_count_stats(self, user_id: int, habit_name: str) -> Dict[str, Any]:
+        """Get count-based statistics for a habit.
+        
+        Args:
+            user_id: Database user ID
+            habit_name: Name of the habit to analyze
+            
+        Returns:
+            Dict with total, average, best, recent counts
+        """
+        async with self.db_manager.get_session() as session:
+            # Get habit
+            habit = await self.get_habit_by_name(habit_name)
+            if not habit:
+                return {"error": f"Habit '{habit_name}' not found"}
+            
+            # Get all logs for this user and habit
+            stmt = select(HabitLog).where(
+                and_(
+                    HabitLog.user_id == user_id,
+                    HabitLog.habit_id == habit.id,
+                    HabitLog.notes.isnot(None)
+                )
+            ).order_by(desc(HabitLog.completion_date))
+            
+            result = await session.execute(stmt)
+            logs = list(result.scalars().all())
+            
+            if not logs:
+                return {"error": f"No logs found for '{habit_name}'"}
+            
+            # Extract counts from all logs
+            counts = []
+            recent_logs = []
+            
+            for log in logs:
+                count = self.extract_count_from_notes(log.notes)
+                if count is not None:
+                    counts.append(count)
+                    recent_logs.append({
+                        "date": log.completion_date.strftime('%Y-%m-%d'),
+                        "count": count,
+                        "notes": log.notes
+                    })
+            
+            if not counts:
+                return {"error": f"No count data found in logs for '{habit_name}'"}
+            
+            # Calculate statistics
+            total = sum(counts)
+            average = total / len(counts)
+            best = max(counts)
+            worst = min(counts)
+            
+            return {
+                "habit_name": habit_name,
+                "total_count": total,
+                "average": round(average, 1),
+                "best": best,
+                "worst": worst,
+                "total_sessions": len(counts),
+                "recent_logs": recent_logs[:10]  # Last 10 sessions with counts
+            }

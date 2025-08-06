@@ -8,6 +8,15 @@ A comprehensive Discord bot for habit tracking, gamification, and productivity e
 - **Natural Language Creation**: Create habits using conversational commands
   - `!create add habit meditation 20 minutes daily at 7am for mindfulness`
   - `!create habit: exercise (15 xp) - daily workout routine`
+- **Multi-Scale Templates**: Create habits across different time scales
+  - **Daily**: Morning routines, exercise, reading (15 XP)
+  - **Weekly**: Laundry, meal prep, cleaning (30 XP)
+  - **Monthly**: Deep cleaning, maintenance tasks (50 XP)
+  - **Quarterly**: Seasonal organization, goal reviews (80 XP)
+  - **Yearly**: Annual checkups, major reviews (100 XP)
+- **Count Tracking**: Track numeric progress for habits like push-ups
+  - `!log push-ups - 32 feeling strong!` automatically extracts and tracks count
+  - `!pushups` shows detailed statistics (total, average, best session)
 - **Flexible Scheduling**: Set custom reminder times and frequencies
 - **Dynamic Categories**: Automatic categorization based on habit keywords
 - **Smart XP Calculation**: Intelligent XP assignment based on activity type and duration
@@ -105,13 +114,16 @@ If you prefer manual setup or need to customize the installation:
 
 ### Habit Management
 - `!create <description>` - Create new habit with natural language
-- `!log <habit> [- notes]` - Log habit completion
+- `!add_habit <scale> <name> <description>` - Create habits using time scale templates
+- `!templates` - Show available time scale templates
+- `!log <habit> [- notes]` - Log habit completion (supports count tracking)
 - `!habits [category]` - List available habits
 - `!schedule <habit> at <time> [frequency]` - Schedule reminders
 - `!today` - Show today's progress
 
 ### Statistics & Progress
 - `!stats [@user]` - Show user statistics
+- `!pushups [@user]` - Show detailed push-up statistics and count tracking
 - `!leaderboard [xp|level|gold|streak]` - View leaderboards
 - `!inventory` - Show items and gold
 - `!rewards [limit]` - Show recent rewards
@@ -135,6 +147,40 @@ If you prefer manual setup or need to customize the installation:
 
 # Recurring reminder
 !create habit drink water every 2 hours
+```
+
+### Multi-Scale Habit Templates
+```
+# Weekly habits
+!add_habit weekly "Meal Prep" "Prepare healthy meals for the week"
+!add_habit weekly "Grocery Shopping" "Weekly food and supplies shopping"
+
+# Monthly habits
+!add_habit monthly "Car Maintenance" "Check oil, tire pressure, and fluid levels"
+!add_habit monthly "Budget Review" "Review expenses and update budget"
+
+# Quarterly habits
+!add_habit quarterly "Goal Review" "Assess progress and set new quarterly goals"
+!add_habit quarterly "Wardrobe Organization" "Seasonal clothing rotation and decluttering"
+
+# Yearly habits
+!add_habit yearly "Annual Health Checkup" "Schedule and complete yearly physical exam"
+!add_habit yearly "Tax Preparation" "Organize documents and file annual taxes"
+
+# See all available templates
+!templates
+```
+
+### Count Tracking
+```
+# Log with automatic count extraction
+!log push-ups - 32 feeling strong!
+!log push-ups - did 45 today
+!log push-ups - completed 28
+
+# View detailed push-up statistics
+!pushups              # Your stats
+!pushups @friend      # Someone else's stats
 ```
 
 ### Logging Completions
@@ -165,6 +211,35 @@ If you prefer manual setup or need to customize the installation:
 !leaderboard xp
 !leaderboard streak
 ```
+
+### Default Multi-Scale Habits
+The bot comes with a comprehensive set of pre-configured habits across all time scales:
+
+**Daily Habits (15-20 XP)**
+- Morning Meditation (7am)
+- Daily Exercise (6pm)
+- Push-ups with count tracking (7pm)
+- Reading for Learning (8pm)
+- Hydration reminders (every 2 hours)
+- Sleep Early (10pm)
+- Gratitude Journal (9pm)
+
+**Weekly Habits (20-60 XP)**
+- Laundry (Sunday 10am)
+- Exercise 3x Weekly goal (Monday reminder)
+- Vacuum cleaning (Saturday 2pm)
+- Grocery shopping (Sunday 11am)
+
+**Monthly Habits (40-50 XP)**
+- Change bed sheets (1st of month)
+- Deep clean bathroom (15th of month)
+- Clean car (28th of month)
+
+**Seasonal Habits (75-80 XP)**
+- Wardrobe organization (Jan/Apr/Jul/Oct)
+- Resume updates (Mar/Jun/Sep/Dec)
+
+All habits include automated Discord reminders with helpful checklists and tips!
 
 ## 🛠️ System Management
 

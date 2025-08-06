@@ -40,7 +40,7 @@ prompts:
       • healthy breakfast
       
       react with ✅ when you complete a habit!
-    channel_id: 1392910044923953172  # #reminders channel
+    channel_id: 954466311596027984  # #reminders channel
     target_users: null  # All users
 
   # Exercise reminder
@@ -60,6 +60,27 @@ prompts:
       • sports activity
       
       react with ✅ when you're done exercising!
+    channel_id: 954466311596027984  # #reminders channel
+    target_users: null
+
+  # Push-up reminder
+  - name: "Push-up Challenge"
+    cron: "0 19 * * *"  # Daily at 7 PM
+    timezone: "America/New_York"
+    message: |
+      💪 **push-up time!**
+      
+      time for your daily push-up challenge! every rep counts towards your strength goals.
+      
+      🎯 push-up variations:
+      • standard push-ups
+      • knee push-ups
+      • incline push-ups
+      • wall push-ups
+      
+      log your count with: `!log push-ups - 32 feeling strong!`
+      
+      react with ✅ when you're done!
     channel_id: 1392910044923953172  # #reminders channel
     target_users: null
 
@@ -116,7 +137,7 @@ prompts:
       • mindful walking
       
       react with ✅ after your mindful moment!
-    channel_id: 1392910044923953172  # #reminders channel
+    channel_id: 954466311596027984  # #reminders channel
     target_users: null
 
   # Evening reflection
@@ -154,7 +175,7 @@ prompts:
       • what support do you need?
       
       react with ✅ when you've set your weekly goals!
-    channel_id: null
+    channel_id: 954466311596027984
     target_users: null
 
   # Hydration reminder
@@ -174,7 +195,136 @@ prompts:
       • coconut water
       
       react with ✅ after you hydrate!
-    channel_id: null
+    channel_id: 954466311596027984
+    target_users: null
+
+  # Weekly habit reminders
+  - name: "Weekly Laundry"
+    cron: "0 10 * * 0"  # Sunday 10am
+    timezone: "America/New_York"
+    message: |
+      🧺 **laundry day!**
+      
+      time to tackle that laundry pile! fresh clothes for the week ahead.
+      
+      🎯 laundry checklist:
+      • sort by colors and fabrics
+      • check pockets for items
+      • use appropriate detergent
+      • don't forget to fold!
+      
+      react with ✅ when your laundry is done!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  - name: "Weekly Vacuum"
+    cron: "0 14 * * 6"  # Saturday 2pm
+    timezone: "America/New_York"
+    message: |
+      🏠 **vacuum time!**
+      
+      weekend cleaning session! give your living spaces some love.
+      
+      🎯 vacuum areas:
+      • living room and bedrooms
+      • hallways and stairs
+      • under furniture when possible
+      • don't forget the car!
+      
+      react with ✅ when you're done cleaning!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  - name: "Grocery Shopping"
+    cron: "0 11 * * 0"  # Sunday 11am
+    timezone: "America/New_York"
+    message: |
+      🛒 **grocery shopping time!**
+      
+      stock up for the week ahead! healthy choices fuel great habits.
+      
+      🎯 shopping tips:
+      • make a list before you go
+      • shop the perimeter first
+      • get plenty of fruits and vegetables
+      • don't shop when hungry!
+      
+      react with ✅ when your shopping is complete!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  # Monthly habit reminders
+  - name: "Change Bed Sheets"
+    cron: "0 9 1 * *"  # 1st of month, 9am
+    timezone: "America/New_York"
+    message: |
+      🛏️ **monthly sheet change!**
+      
+      fresh sheets for a fresh start to the month! nothing beats that clean bed feeling.
+      
+      🎯 sheet change checklist:
+      • strip old sheets and pillowcases
+      • wash in hot water if possible
+      • put on fresh, clean sheets
+      • fluff those pillows!
+      
+      react with ✅ when your bed is refreshed!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  - name: "Deep Clean Bathroom"
+    cron: "0 10 15 * *"  # 15th of month, 10am
+    timezone: "America/New_York"
+    message: |
+      🚿 **monthly bathroom deep clean!**
+      
+      mid-month deep clean time! a spotless bathroom is a happy bathroom.
+      
+      🎯 deep clean tasks:
+      • scrub shower/tub thoroughly
+      • disinfect toilet inside and out
+      • clean mirror and fixtures
+      • mop floors and replace towels
+      
+      react with ✅ when your bathroom sparkles!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  # Seasonal/Quarterly reminders
+  - name: "Seasonal Wardrobe"
+    cron: "0 10 1 1,4,7,10 *"  # Quarterly: Jan/Apr/Jul/Oct 1st
+    timezone: "America/New_York"
+    message: |
+      👕 **seasonal wardrobe time!**
+      
+      new season, new wardrobe organization! time to rotate and declutter.
+      
+      🎯 wardrobe tasks:
+      • pack away off-season clothes
+      • bring out seasonal items
+      • donate clothes you don't wear
+      • organize by type and color
+      
+      react with ✅ when your wardrobe is season-ready!
+    channel_id: 1392910044923953172  # #reminders channel
+    target_users: null
+
+  - name: "Resume Update"
+    cron: "0 14 15 3,6,9,12 *"  # Quarterly: Mar/Jun/Sep/Dec 15th
+    timezone: "America/New_York"
+    message: |
+      📄 **quarterly resume update!**
+      
+      keep your professional profile fresh! document your recent accomplishments.
+      
+      🎯 resume update tasks:
+      • add new skills and certifications
+      • update recent projects and achievements
+      • refresh contact information
+      • save in multiple formats
+      
+      react with ✅ when your resume is current!
+    channel_id: 1392910044923953172  # #reminders channel
     target_users: null
 
 # Configuration settings

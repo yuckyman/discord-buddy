@@ -267,7 +267,7 @@ class HabitCommands(commands.Cog):
     
     # === DYNAMIC HABIT CREATION ===
     
-    @commands.command(name="create", aliases=["add", "new"])
+    @commands.command(name="create", aliases=["new"])
     async def create_habit(self, ctx, *, description: str):
         """Create a new habit using natural language.
         
@@ -369,6 +369,142 @@ class HabitCommands(commands.Cog):
         except Exception as e:
             logger.error(f"Error scheduling habit: {e}")
             await ctx.send("❌ Error updating schedule. Please try again.")
+    
+    # === MULTI-SCALE HABIT CREATION ===
+    
+    @commands.command(name="add_habit", aliases=["template_habit", "scale_habit"])
+    async def add_habit_from_template(self, ctx, template_type: str, name: str, *, description: str = ""):
+        """Create a habit using predefined time scale templates.
+        
+        Usage: !add_habit weekly "Meal Prep" "Prepare meals for the week"
+               !add_habit monthly "Car Maintenance" "Check oil and tire pressure"
+               !add_habit quarterly "Goal Review" "Review and update quarterly goals"
+        
+        Templates: daily, weekly, monthly, quarterly, yearly
+        """
+        try:
+            # Check if template type is valid
+            valid_templates = ["daily", "weekly", "monthly", "quarterly", "yearly"]
+            if template_type.lower() not in valid_templates:
+                await ctx.send(f"❌ Invalid template type. Choose from: {', '.join(valid_templates)}")
+                return
+            
+            # Get startup habits service for template access
+            from startup_habits import StartupHabits
+            startup = StartupHabits(self.bot)
+            
+            # Create habit from template
+            try:
+                habit_tuple = startup.create_habit_from_template(
+                    name=name,
+                    description=description or f"A {template_type} habit",
+                    template_type=template_type.lower(),
+                    category="wellness"  # Default category
+                )
+                
+                # Create the habit
+                habit = await self.habit_service.create_habit(
+                    name=habit_tuple[0],
+                    description=habit_tuple[1],
+                    base_xp=habit_tuple[2],
+                    category=habit_tuple[3]
+                )
+                
+                # Create the schedule
+                if habit_tuple[4]:  # cron expression
+                    try:
+                        await self.habit_service.schedule_habit_reminder(
+                            habit_name=habit_tuple[0],
+                            cron_expression=habit_tuple[4]
+                        )
+                        schedule_msg = f"Scheduled {template_type} reminders"
+                    except Exception as e:
+                        logger.warning(f"Failed to schedule {name}: {e}")
+                        schedule_msg = "Habit created but scheduling failed"
+                else:
+                    schedule_msg = "No schedule created"
+                
+                # Success response
+                embed = discord.Embed(
+                    title="✅ Multi-Scale Habit Created!",
+                    description=f"**{name}** is ready to help you build consistency!",
+                    color=discord.Color.green()
+                )
+                
+                embed.add_field(
+                    name="📋 details",
+                    value=f"""
+**name:** {habit_tuple[0]}
+**description:** {habit_tuple[1]}
+**xp reward:** {habit_tuple[2]}
+**category:** {habit_tuple[3]}
+**schedule:** {template_type} reminders
+                    """,
+                    inline=False
+                )
+                
+                # Show template examples
+                template_info = startup.habit_templates[template_type.lower()]
+                embed.add_field(
+                    name="💡 template examples",
+                    value=", ".join(template_info["examples"]),
+                    inline=False
+                )
+                
+                embed.add_field(
+                    name="🚀 next steps",
+                    value=f"use `!log {name.lower()}` to track completions!",
+                    inline=False
+                )
+                
+                await ctx.send(embed=embed)
+                
+            except Exception as e:
+                logger.error(f"Error creating habit from template: {e}")
+                await ctx.send(f"❌ Error creating habit: {str(e)}")
+                
+        except Exception as e:
+            logger.error(f"Template habit command error: {e}")
+            await ctx.send("❌ Error processing template habit. Please try again.")
+    
+    @commands.command(name="templates", aliases=["habit_templates", "scales"])
+    async def show_templates(self, ctx):
+        """Show available habit templates and examples."""
+        try:
+            from startup_habits import StartupHabits
+            startup = StartupHabits(self.bot)
+            
+            embed = discord.Embed(
+                title="🎯 Habit Templates & Time Scales",
+                description="create habits at different time scales for comprehensive life management!",
+                color=0x00ff88
+            )
+            
+            for template_name, template_info in startup.habit_templates.items():
+                examples = ", ".join(template_info["examples"])
+                embed.add_field(
+                    name=f"📅 {template_name.title()}",
+                    value=f"**xp:** {template_info['base_xp']} | **examples:** {examples}",
+                    inline=False
+                )
+            
+            embed.add_field(
+                name="🚀 usage",
+                value="`!add_habit weekly 'Meal Prep' 'Prepare healthy meals'`",
+                inline=False
+            )
+            
+            embed.add_field(
+                name="💡 pro tip",
+                value="different time scales help you manage everything from daily routines to seasonal tasks!",
+                inline=False
+            )
+            
+            await ctx.send(embed=embed)
+            
+        except Exception as e:
+            logger.error(f"Templates command error: {e}")
+            await ctx.send("❌ Error showing templates. Please try again.")
     
     # === PROGRESS TRACKING ===
     
