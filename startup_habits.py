@@ -210,7 +210,8 @@ Let's make today legendary! What habit will you tackle first? 💪"""
                             try:
                                 await self.habit_service.schedule_habit_reminder(
                                     habit_name=name,
-                                    cron_expression=schedule
+                                    cron_expression=schedule,
+                                    bot=self.bot
                                 )
                                 logger.info(f"Scheduled habit reminder: {name} ({schedule})")
                             except Exception as e:

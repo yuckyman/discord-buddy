@@ -696,3 +696,44 @@ class HabitService:
                 "total_sessions": len(counts),
                 "recent_logs": recent_logs[:10]  # Last 10 sessions with counts
             }
+    
+    async def schedule_habit_reminder(self, habit_name: str, cron_expression: str, bot=None) -> PromptSchedule:
+        """Schedule a habit reminder using the prompt service.
+        
+        Args:
+            habit_name: Name of the habit to schedule reminders for
+            cron_expression: Cron expression for the schedule
+            bot: Discord bot instance (optional, will be set by calling service)
+            
+        Returns:
+            The created PromptSchedule object
+        """
+        try:
+            # Get the habit to ensure it exists
+            habit = await self.get_habit_by_name(habit_name)
+            if not habit:
+                raise ValueError(f"Habit '{habit_name}' not found")
+            
+            # Create prompt text for the habit
+            prompt_text = f"🌱 Time for your **{habit_name}** habit!\n\n"
+            if habit.description:
+                prompt_text += f"*{habit.description}*\n\n"
+            prompt_text += f"React with ✅ when you complete this habit to earn {habit.base_xp} XP!"
+            
+            # Create the prompt schedule using the prompt service
+            from services.prompt_service import PromptService
+            prompt_service = PromptService(self.db_manager, bot)
+            
+            schedule = await prompt_service.create_schedule(
+                name=f"{habit_name} Reminder",
+                prompt_text=prompt_text,
+                cron_expression=cron_expression,
+                channel_id=None  # Use default channel
+            )
+            
+            logger.info(f"Scheduled habit reminder for '{habit_name}' with cron: {cron_expression}")
+            return schedule
+            
+        except Exception as e:
+            logger.error(f"Failed to schedule habit reminder for '{habit_name}': {e}")
+            raise
