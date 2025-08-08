@@ -30,7 +30,11 @@ class PromptService:
         
         # Timezone for scheduling (should match environment setting)
         self.timezone = os.getenv("TIMEZONE", "UTC")
-    
+        
+        # Customization defaults
+        self.prompt_embed_color = os.getenv("PROMPT_EMBED_COLOR", "#00FF7F")
+        self.prompt_reaction_emoji = os.getenv("PROMPT_REACTION_EMOJI", "✅")
+
     async def start_scheduler(self) -> None:
         """Start the APScheduler for handling prompts."""
         try:
@@ -131,13 +135,13 @@ class PromptService:
                 embed = discord.Embed(
                     title="🌱 Habit Reminder",
                     description=schedule.prompt_text,
-                    color=discord.Color.green(),
+                    color=self._parse_hex_color(self.prompt_embed_color),
                     timestamp=datetime.utcnow()
                 )
                 
                 embed.add_field(
                     name="How to respond",
-                    value="React with ✅ when you complete this habit!",
+                    value=f"React with {self.prompt_reaction_emoji} when you complete this habit!",
                     inline=False
                 )
                 
@@ -147,7 +151,8 @@ class PromptService:
                 message = await channel.send(embed=embed)
                 
                 # Add reaction for easy interaction
-                await message.add_reaction("✅")
+                if os.getenv("ENABLE_PROMPT_REACTIONS", "true").strip().lower() not in {"0", "false", "no", "off"}:
+                    await message.add_reaction(self.prompt_reaction_emoji)
                 
                 logger.info(f"Sent scheduled prompt: {schedule.name} to {channel.name}")
                 
@@ -411,3 +416,17 @@ class PromptService:
                 "scheduler_running": self.scheduler.running if self.scheduler else False,
                 "active_jobs": len(self.scheduled_jobs)
             }
+
+    @staticmethod
+    def _parse_hex_color(hex_str: str) -> discord.Color:
+        try:
+            s = hex_str.strip().lower()
+            if s.startswith("0x"):
+                s = s[2:]
+            if s.startswith("#"):
+                s = s[1:]
+            value = int(s, 16)
+            value = value & 0xFFFFFF
+            return discord.Color(value)
+        except Exception:
+            return discord.Color.green()
