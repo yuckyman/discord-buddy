@@ -1,0 +1,5 @@
+id,name,prep_time,cook_time,servings,difficulty,category,ingredients,instructions,tags
+1,Overnight Oats,5,0,1,easy,breakfast,"oats,milk,berries,honey","Mix oats and milk in jar. Add toppings. Refrigerate overnight.",quick,healthy,prep
+2,Sheet Pan Chicken,10,25,4,easy,dinner,"chicken thighs,vegetables,olive oil,seasoning","Toss everything with oil and seasoning. Bake at 400°F for 25min.",protein,meal-prep
+3,Green Smoothie,5,0,1,easy,breakfast,"spinach,banana,berries,protein powder,almond milk","Blend all ingredients until smooth. Add ice if desired.",healthy,quick,protein
+4,Quinoa Bowl,15,20,2,medium,lunch,"quinoa,black beans,avocado,tomatoes,lime","Cook quinoa. Assemble bowl with toppings and lime dressing.",vegetarian,protein,fiber

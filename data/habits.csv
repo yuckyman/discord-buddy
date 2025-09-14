@@ -1,0 +1,7 @@
+id,name,description,base_xp,category,created_at
+1,Morning Exercise,Start the day with movement,15,fitness,2024-01-01
+2,Meditation,10 minutes of mindfulness,10,wellness,2024-01-01
+3,Read,Read for at least 15 minutes,12,learning,2024-01-01
+4,Healthy Meal,Eat a nutritious meal,8,nutrition,2024-01-01
+5,Hydration,Drink adequate water,5,wellness,2024-01-01
+6,Sleep Schedule,Go to bed on time,10,wellness,2024-01-01
