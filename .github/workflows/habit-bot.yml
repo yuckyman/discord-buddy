@@ -2,14 +2,17 @@ name: Discord Habit Bot
 
 on:
   schedule:
-    # Run every 30 minutes during active hours (8 AM - 10 PM UTC)
-    - cron: '*/30 8-22 * * *'
-    # Morning recipe suggestion (8 AM UTC)
-    - cron: '0 8 * * *'
-    # Lunch recipe suggestion (12 PM UTC)
-    - cron: '0 12 * * *'
-    # Dinner recipe suggestion (6 PM UTC)
-    - cron: '0 18 * * *'
+    # Morning habits + breakfast (8:00-8:15 AM EST = 1:00-1:15 PM UTC)
+    - cron: '0 13 * * *'  # 8:00 AM EST
+    - cron: '5 13 * * *'  # 8:05 AM EST  
+    - cron: '10 13 * * *' # 8:10 AM EST
+    - cron: '15 13 * * *' # 8:15 AM EST
+    # Evening exercise + dinner (6:00-8:00 PM EST = 11:00 PM-1:00 AM UTC)
+    - cron: '0 23 * * *'  # 6:00 PM EST
+    - cron: '30 23 * * *' # 6:30 PM EST
+    - cron: '0 0 * * *'   # 7:00 PM EST (midnight UTC)
+    - cron: '30 0 * * *'  # 7:30 PM EST
+    - cron: '0 1 * * *'   # 8:00 PM EST (1:00 AM UTC)
 
   workflow_dispatch:
     inputs:
@@ -45,7 +48,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install discord.py python-dotenv pandas PyNaCl
+        pip install discord.py python-dotenv pandas PyNaCl requests
 
     - name: Create data directory
       run: |

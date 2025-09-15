@@ -1,7 +1,10 @@
-id,name,description,base_xp,category,created_at
-1,Morning Exercise,Start the day with movement,15,fitness,2024-01-01
-2,Meditation,10 minutes of mindfulness,10,wellness,2024-01-01
-3,Read,Read for at least 15 minutes,12,learning,2024-01-01
-4,Healthy Meal,Eat a nutritious meal,8,nutrition,2024-01-01
-5,Hydration,Drink adequate water,5,wellness,2024-01-01
-6,Sleep Schedule,Go to bed on time,10,wellness,2024-01-01
+id,name,description,base_xp,category,created_at,time_preference
+1,Daily Inventory Check,Reflect on yesterday and plan today,20,wellness,2024-01-01,morning
+2,Morning Movement,5-10 minutes of stretching or light exercise,15,fitness,2024-01-01,morning
+3,Evening Workout,30+ minutes of exercise or physical activity,25,fitness,2024-01-01,evening
+4,Strength Training,Weight training or bodyweight exercises,30,fitness,2024-01-01,evening
+5,Cardio Session,Running, cycling, or other cardio,25,fitness,2024-01-01,evening
+6,Meditation,10 minutes of mindfulness,10,wellness,2024-01-01,anytime
+7,Read,Read for at least 15 minutes,12,learning,2024-01-01,anytime
+8,Hydration,Drink adequate water,5,wellness,2024-01-01,anytime
+9,Sleep Schedule,Go to bed on time,10,wellness,2024-01-01,evening

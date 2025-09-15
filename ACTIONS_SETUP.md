@@ -19,11 +19,14 @@ python get_channel_ids.py
 This will show all available channels in your Discord server with their IDs.
 
 ## Schedule
-The bot runs automatically:
-- **Every 30 minutes** (8 AM - 10 PM UTC): Check for habit updates
-- **8 AM UTC**: Morning recipe (breakfast)
-- **12 PM UTC**: Lunch recipe
-- **6 PM UTC**: Dinner recipe
+The bot runs automatically at specific times:
+- **8:00-8:15 AM EST**: Morning habits + breakfast suggestions
+- **6:00-8:00 PM EST**: Evening exercise + dinner suggestions
+
+### Timing Details
+- **Morning (8:00-8:15 AM EST)**: Daily inventory check + morning movement habits + breakfast recipes
+- **Evening (6:00-8:00 PM EST)**: Exercise habits + dinner recipes
+- **Habit Focus**: 1-2 habits per notification to avoid overwhelm
 
 ## Manual Triggers
 Go to Actions tab → "Discord Habit Bot" → "Run workflow" to manually:
@@ -47,6 +50,18 @@ id,name,prep_time,cook_time,servings,difficulty,category,ingredients,instruction
 
 Categories: `breakfast`, `lunch`, `dinner`
 Difficulty: `easy`, `medium`, `hard`
+
+### API Integration
+The bot now includes **The Meal DB API** integration as a fallback:
+- **Free API**: No API key required
+- **Automatic Fallback**: Uses local recipes first, then API if needed
+- **Source Tracking**: Shows whether recipe came from local database or API
+- **Variety**: Adds more recipe options without manual entry
+
+### Recipe Sources
+1. **Local Database**: Your curated recipes in `data/recipes.csv`
+2. **The Meal DB API**: Free recipe database with thousands of meals
+3. **Fallback**: Always ensures a recipe is provided
 
 ## Troubleshooting
 

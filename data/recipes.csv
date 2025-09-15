@@ -1,5 +1,10 @@
 id,name,prep_time,cook_time,servings,difficulty,category,ingredients,instructions,tags
 1,Overnight Oats,5,0,1,easy,breakfast,"oats,milk,berries,honey","Mix oats and milk in jar. Add toppings. Refrigerate overnight.",quick,healthy,prep
-2,Sheet Pan Chicken,10,25,4,easy,dinner,"chicken thighs,vegetables,olive oil,seasoning","Toss everything with oil and seasoning. Bake at 400°F for 25min.",protein,meal-prep
-3,Green Smoothie,5,0,1,easy,breakfast,"spinach,banana,berries,protein powder,almond milk","Blend all ingredients until smooth. Add ice if desired.",healthy,quick,protein
-4,Quinoa Bowl,15,20,2,medium,lunch,"quinoa,black beans,avocado,tomatoes,lime","Cook quinoa. Assemble bowl with toppings and lime dressing.",vegetarian,protein,fiber
+2,Avocado Toast,3,2,1,easy,breakfast,"bread,avocado,lemon,salt,pepper,red pepper flakes","Toast bread. Mash avocado with lemon, salt, pepper. Top with red pepper flakes.",quick,healthy,simple
+3,Protein Pancakes,5,8,2,easy,breakfast,"oats,banana,eggs,protein powder,vanilla","Blend ingredients. Cook like regular pancakes. Serve with berries.",protein,healthy,quick
+4,Green Smoothie,5,0,1,easy,breakfast,"spinach,banana,berries,protein powder,almond milk","Blend all ingredients until smooth. Add ice if desired.",healthy,quick,protein
+5,Sheet Pan Chicken,10,25,4,easy,dinner,"chicken thighs,vegetables,olive oil,seasoning","Toss everything with oil and seasoning. Bake at 400°F for 25min.",protein,meal-prep,one-pan
+6,Salmon & Roasted Veggies,10,20,2,easy,dinner,"salmon fillet,broccoli,sweet potato,olive oil,herbs","Season salmon. Roast veggies at 425°F for 15min, add salmon for last 10min.",protein,healthy,omega-3
+7,One-Pot Pasta,5,15,3,easy,dinner,"pasta,tomatoes,spinach,garlic,olive oil,parmesan","Cook pasta with tomatoes and garlic. Add spinach at end. Top with parmesan.",vegetarian,quick,one-pot
+8,Stir-Fry,10,10,2,easy,dinner,"protein,vegetables,soy sauce,ginger,garlic,rice","Stir-fry protein, add veggies, sauce. Serve over rice.",protein,quick,versatile
+9,Quinoa Bowl,15,20,2,medium,lunch,"quinoa,black beans,avocado,tomatoes,lime","Cook quinoa. Assemble bowl with toppings and lime dressing.",vegetarian,protein,fiber
