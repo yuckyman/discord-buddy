@@ -141,11 +141,6 @@ class ActionsBot:
             embed.add_field(name="How to use", value="React with ✅ for the first habit, ☑️ for the second habit!", inline=False)
 
         message = await channel.send(embed=embed)
-        
-        # Add the appropriate reactions
-        for i in range(len(selected_habits)):
-            emoji = habit_emojis[i] if i < len(habit_emojis) else "✅"
-            await message.add_reaction(emoji)
 
         logger.info(f"Sent {time_period} habit check-in to {channel.name}")
 
