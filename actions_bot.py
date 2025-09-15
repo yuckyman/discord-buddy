@@ -133,9 +133,6 @@ class ActionsBot:
 
         message = await channel.send(embed=embed)
 
-        # Add reaction options
-        await message.add_reaction("✅")
-
         logger.info(f"Sent {time_period} habit check-in to {channel.name}")
 
     async def send_recipe(self, channel):
