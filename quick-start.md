@@ -2,7 +2,23 @@
 
 ## 🔄 Making the Bot Persistent
 
-### Option 1: Systemd Service (Recommended for Linux)
+### Option 1: GitHub Actions (Recommended) 🆕
+
+The bot now runs entirely on GitHub Actions - no server needed!
+
+1. **Fork this repository**
+2. **Set up GitHub Secrets**:
+   - Go to Settings → Secrets and Variables → Actions
+   - Add: `DISCORD_TOKEN`, `HABIT_CHANNEL_ID`, `MEALS_CHANNEL_ID`, `TIMEZONE`
+3. **Get Channel IDs**:
+   ```bash
+   python get_channel_ids.py
+   ```
+4. **That's it!** The bot will run automatically on schedule
+
+See [ACTIONS_SETUP.md](ACTIONS_SETUP.md) for detailed setup instructions.
+
+### Option 2: Systemd Service (Local Server)
 
 1. **Install as service:**
    ```bash
@@ -51,18 +67,26 @@
    ./manage-bot.sh stop
    ```
 
-## 🎯 Startup Habits Feature
+## 🎯 Time-Specific Habit System
 
-The bot now automatically:
+The bot now organizes habits by time of day for focused notifications:
 
-1. **Creates default habits** on first run:
-   - Morning Meditation (7 AM daily)
-   - Daily Exercise (6 PM daily) 
-   - Read for Learning (8 PM daily)
-   - Drink Water (every 2 hours)
-   - Sleep Early (10 PM daily)
-   - Gratitude Journal (9 PM daily)
-   - Code Review (9 AM weekdays)
+### Morning Habits (8:00-8:15 AM EST)
+- **Daily Inventory Check** (20 XP) - Reflect on yesterday, plan today
+- **Morning Movement** (15 XP) - 5-10 minutes of stretching or light exercise
+- **Meditation** (10 XP) - 10 minutes of mindfulness
+- **Reading** (12 XP) - Read for at least 15 minutes
+- **Hydration** (5 XP) - Drink adequate water
+
+### Evening Habits (6:00-8:00 PM EST)
+- **Evening Workout** (25 XP) - 30+ minutes of exercise or physical activity
+- **Strength Training** (30 XP) - Weight training or bodyweight exercises
+- **Cardio Session** (25 XP) - Running, cycling, or other cardio
+- **Sleep Schedule** (10 XP) - Go to bed on time
+
+### Meal Suggestions 🍽️
+- **Breakfast** (8:00-8:15 AM EST) - Local recipes + The Meal DB API
+- **Dinner** (6:00-8:00 PM EST) - Local recipes + The Meal DB API
 
 2. **Sends startup notification** when bot comes online:
    - Welcome message with quick start tips

@@ -2,6 +2,8 @@
 
 A comprehensive Discord bot for habit tracking, gamification, and productivity enhancement. Built with natural language processing for easy habit management and featuring reward systems, streak tracking, and scheduled reminders.
 
+**🚀 Now with GitHub Actions!** The bot runs entirely on GitHub Actions with CSV storage - no server needed!
+
 ## ✨ Features
 
 ### 🎯 Habit Management
@@ -41,17 +43,40 @@ A comprehensive Discord bot for habit tracking, gamification, and productivity e
 - **Historical Data**: Track long-term progress and trends
 
 ### ⏰ Automated Reminders
-- **Scheduled Prompts**: Cron-based habit reminders
+- **GitHub Actions Scheduling**: Runs on GitHub Actions with precise timing
+- **Time-Specific Notifications**: Morning (8:00-8:15 AM EST) and evening (6:00-8:00 PM EST)
+- **Focused Habits**: 1-2 habits per notification to avoid overwhelm
 - **Reaction Logging**: React with ✅ to log habit completion
 - **Smart Scheduling**: Natural language time parsing
 - **Timezone Support**: Configurable timezone handling
 
 ### 🔗 Integrations
+- **The Meal DB API**: Free recipe integration for meal suggestions
+- **CSV Data Storage**: All data stored in CSV files for easy access
+- **Git Integration**: Automatic data commits to repository
 - **Obsidian Sync**: Export habit data to Obsidian vault (planned)
 - **Anki Integration**: Spaced repetition for habit reflection (planned)
 - **Custom Templates**: Jinja2 templates for data export
 
 ## 🚀 Quick Start
+
+### Option 1: GitHub Actions (Recommended) 🆕
+
+The bot now runs entirely on GitHub Actions - no server needed!
+
+1. **Fork this repository**
+2. **Set up GitHub Secrets**:
+   - Go to Settings → Secrets and Variables → Actions
+   - Add: `DISCORD_TOKEN`, `HABIT_CHANNEL_ID`, `MEALS_CHANNEL_ID`, `TIMEZONE`
+3. **Get Channel IDs**:
+   ```bash
+   python get_channel_ids.py
+   ```
+4. **That's it!** The bot will run automatically on schedule
+
+See [ACTIONS_SETUP.md](ACTIONS_SETUP.md) for detailed setup instructions.
+
+### Option 2: Local Server Setup
 
 ### Prerequisites
 - Debian/Ubuntu Linux system
@@ -212,17 +237,44 @@ If you prefer manual setup or need to customize the installation:
 !leaderboard streak
 ```
 
-### Default Multi-Scale Habits
-The bot comes with a comprehensive set of pre-configured habits across all time scales:
+### Time-Specific Habit Categories
+The bot now organizes habits by time of day for focused notifications:
 
-**Daily Habits (15-20 XP)**
-- Morning Meditation (7am)
-- Daily Exercise (6pm)
-- Push-ups with count tracking (7pm)
-- Reading for Learning (8pm)
-- Hydration reminders (every 2 hours)
-- Sleep Early (10pm)
-- Gratitude Journal (9pm)
+**Morning Habits (8:00-8:15 AM EST)**
+- Daily Inventory Check (20 XP) - Reflect on yesterday, plan today
+- Morning Movement (15 XP) - 5-10 minutes of stretching or light exercise
+- Meditation (10 XP) - 10 minutes of mindfulness
+- Reading (12 XP) - Read for at least 15 minutes
+- Hydration (5 XP) - Drink adequate water
+
+**Evening Habits (6:00-8:00 PM EST)**
+- Evening Workout (25 XP) - 30+ minutes of exercise or physical activity
+- Strength Training (30 XP) - Weight training or bodyweight exercises
+- Cardio Session (25 XP) - Running, cycling, or other cardio
+- Sleep Schedule (10 XP) - Go to bed on time
+
+**Anytime Habits**
+- Meditation (10 XP) - 10 minutes of mindfulness
+- Reading (12 XP) - Read for at least 15 minutes
+- Hydration (5 XP) - Drink adequate water
+
+### Meal Suggestions 🍽️
+The bot provides meal suggestions with recipe integration:
+
+**Breakfast (8:00-8:15 AM EST)**
+- Local recipe database with curated breakfast options
+- The Meal DB API integration for variety
+- Quick and healthy morning meal ideas
+
+**Dinner (6:00-8:00 PM EST)**
+- Local recipe database with dinner options
+- The Meal DB API integration for variety
+- Satisfying evening meal suggestions
+
+**Recipe Sources**
+1. **Local Database**: Curated recipes in `data/recipes.csv`
+2. **The Meal DB API**: Free recipe database with thousands of meals
+3. **Automatic Fallback**: Always ensures a recipe is provided
 
 **Weekly Habits (20-60 XP)**
 - Laundry (Sunday 10am)
@@ -310,6 +362,21 @@ The Discord Habit Bot uses a clean domain-driven architecture with well-defined 
 ## 🔧 Configuration
 
 ### Environment Variables
+
+#### GitHub Actions Setup
+```bash
+# Required for GitHub Actions
+DISCORD_TOKEN=your_bot_token
+HABIT_CHANNEL_ID=your_habit_channel_id
+MEALS_CHANNEL_ID=your_meals_channel_id
+TIMEZONE=America/New_York
+
+# Optional
+COMMAND_PREFIX=!
+LOG_LEVEL=INFO
+```
+
+#### Local Server Setup
 ```bash
 # Required
 DISCORD_TOKEN=your_bot_token
@@ -379,6 +446,11 @@ pytest tests/ -v
 - [x] Basic gamification (XP, levels)
 - [x] Streak tracking
 - [x] Scheduled prompts
+- [x] GitHub Actions integration
+- [x] CSV data storage
+- [x] Time-specific habit notifications
+- [x] Meal suggestion system
+- [x] Recipe API integration
 
 ### Phase 2 🚧
 - [ ] Advanced Obsidian integration
