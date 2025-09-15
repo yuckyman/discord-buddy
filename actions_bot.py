@@ -124,14 +124,28 @@ class ActionsBot:
             color=color
         )
 
+        # Define emojis for each habit
+        habit_emojis = ["✅", "☑️"]
+        
         habit_text = ""
-        for _, habit in selected_habits.iterrows():
-            habit_text += f"✅ **{habit['name']}**\n{habit['description']} (+{habit['base_xp']} XP)\n\n"
+        for i, (_, habit) in enumerate(selected_habits.iterrows()):
+            emoji = habit_emojis[i] if i < len(habit_emojis) else "✅"
+            habit_text += f"{emoji} **{habit['name']}**\n{habit['description']} (+{habit['base_xp']} XP)\n\n"
 
         embed.add_field(name="Today's Focus", value=habit_text, inline=False)
-        embed.add_field(name="How to use", value="React with ✅ for each habit you completed!", inline=False)
+        
+        # Create reaction instructions based on number of habits
+        if len(selected_habits) == 1:
+            embed.add_field(name="How to use", value="React with ✅ when you complete this habit!", inline=False)
+        else:
+            embed.add_field(name="How to use", value="React with ✅ for the first habit, ☑️ for the second habit!", inline=False)
 
         message = await channel.send(embed=embed)
+        
+        # Add the appropriate reactions
+        for i in range(len(selected_habits)):
+            emoji = habit_emojis[i] if i < len(habit_emojis) else "✅"
+            await message.add_reaction(emoji)
 
         logger.info(f"Sent {time_period} habit check-in to {channel.name}")
 
