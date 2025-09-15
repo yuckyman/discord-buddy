@@ -2,17 +2,10 @@ name: Discord Habit Bot
 
 on:
   schedule:
-    # Morning habits + breakfast (8:00-8:15 AM EST = 1:00-1:15 PM UTC)
-    - cron: '0 13 * * *'  # 8:00 AM EST
-    - cron: '5 13 * * *'  # 8:05 AM EST  
-    - cron: '10 13 * * *' # 8:10 AM EST
-    - cron: '15 13 * * *' # 8:15 AM EST
-    # Evening exercise + dinner (6:00-8:00 PM EST = 11:00 PM-1:00 AM UTC)
-    - cron: '0 23 * * *'  # 6:00 PM EST
-    - cron: '30 23 * * *' # 6:30 PM EST
-    - cron: '0 0 * * *'   # 7:00 PM EST (midnight UTC)
-    - cron: '30 0 * * *'  # 7:30 PM EST
-    - cron: '0 1 * * *'   # 8:00 PM EST (1:00 AM UTC)
+    # Morning habit check (8 AM EST = 1 PM UTC)
+    - cron: '0 13 * * *'
+    # Evening habits + dinner (7 PM EST = midnight UTC)
+    - cron: '0 0 * * *'
 
   workflow_dispatch:
     inputs:
@@ -54,12 +47,29 @@ jobs:
       run: |
         mkdir -p data
 
+    - name: Determine action based on schedule
+      id: determine-action
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "action=${{ github.event.inputs.action }}" >> $GITHUB_OUTPUT
+        else
+          # Determine action based on time (UTC)
+          hour=$(date -u +%H)
+          if [ "$hour" = "13" ]; then
+            echo "action=check-habits" >> $GITHUB_OUTPUT
+          elif [ "$hour" = "00" ]; then
+            echo "action=send-recipe" >> $GITHUB_OUTPUT
+          else
+            echo "action=check-habits" >> $GITHUB_OUTPUT
+          fi
+        fi
+
     - name: Run habit bot
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         HABIT_CHANNEL_ID: ${{ secrets.HABIT_CHANNEL_ID }}
         MEALS_CHANNEL_ID: ${{ secrets.MEALS_CHANNEL_ID }}
-        ACTION: ${{ github.event.inputs.action || 'check-habits' }}
+        ACTION: ${{ steps.determine-action.outputs.action }}
       run: |
         python actions_bot.py
 
