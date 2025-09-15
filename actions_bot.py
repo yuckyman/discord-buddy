@@ -29,8 +29,16 @@ class ActionsBot:
         self.client = discord.Client(intents=intents)
 
         # Channels
-        self.habit_channel_id = int(os.getenv("HABIT_CHANNEL_ID"))
-        self.meals_channel_id = int(os.getenv("MEALS_CHANNEL_ID"))
+        habit_channel_id = os.getenv("HABIT_CHANNEL_ID")
+        meals_channel_id = os.getenv("MEALS_CHANNEL_ID")
+        
+        if not habit_channel_id:
+            raise ValueError("HABIT_CHANNEL_ID environment variable is not set")
+        if not meals_channel_id:
+            raise ValueError("MEALS_CHANNEL_ID environment variable is not set")
+            
+        self.habit_channel_id = int(habit_channel_id)
+        self.meals_channel_id = int(meals_channel_id)
 
         # CSV file paths
         self.data_dir = "data"
@@ -40,14 +48,24 @@ class ActionsBot:
         self.recipes_file = f"{self.data_dir}/recipes.csv"
 
         # Load data
-        self.users_df = pd.read_csv(self.users_file)
-        self.habits_df = pd.read_csv(self.habits_file)
-        self.habit_logs_df = pd.read_csv(self.habit_logs_file)
-        self.recipes_df = pd.read_csv(self.recipes_file)
+        try:
+            self.users_df = pd.read_csv(self.users_file)
+            self.habits_df = pd.read_csv(self.habits_file)
+            self.habit_logs_df = pd.read_csv(self.habit_logs_file)
+            self.recipes_df = pd.read_csv(self.recipes_file)
+        except FileNotFoundError as e:
+            logger.error(f"Required CSV file not found: {e}")
+            raise
+        except Exception as e:
+            logger.error(f"Error loading CSV files: {e}")
+            raise
 
     async def connect_and_run(self, action: str):
         """Connect to Discord and perform the specified action"""
-        await self.client.login(os.getenv("DISCORD_TOKEN"))
+        discord_token = os.getenv("DISCORD_TOKEN")
+        if not discord_token:
+            raise ValueError("DISCORD_TOKEN environment variable is not set")
+        await self.client.login(discord_token)
 
         try:
             # Get channels

@@ -45,7 +45,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install discord.py python-dotenv pandas
+        pip install discord.py python-dotenv pandas PyNaCl
+
+    - name: Create data directory
+      run: |
+        mkdir -p data
 
     - name: Run habit bot
       env:
