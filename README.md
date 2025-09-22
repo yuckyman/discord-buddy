@@ -330,6 +330,42 @@ cd /opt/discord-habit-bot
 ./manage.sh update
 ```
 
+## 🔔 Heartbeat / Ping Messages
+
+You can enable a periodic heartbeat message to a channel for health checks.
+
+Set the following environment variables (in `.env`):
+
+```
+# Enable/disable
+PING_ENABLED=true
+
+# Interval (choose one)
+PING_INTERVAL_SECONDS=300           # every 5 minutes
+# or
+# PING_INTERVAL_MINUTES=5
+
+# Target channel (falls back to COMMANDS_CHANNEL_ID or first writable channel)
+PING_CHANNEL_ID=1392911686737854625
+
+# Message customization
+PING_MESSAGE="{emoji} Heartbeat OK | Uptime: {uptime} | Guilds: {guild_count} | {timestamp} UTC"
+PING_EMOJI=💓
+PING_USE_EMBED=true
+PING_EMBED_COLOR=#00FF7F
+
+# Prompt customization (also used by scheduler prompts)
+PROMPT_EMBED_COLOR=#00FF7F
+PROMPT_REACTION_EMOJI=✅
+ENABLE_PROMPT_REACTIONS=true
+```
+
+Placeholders available in `PING_MESSAGE`:
+- `{emoji}`
+- `{uptime}` (e.g., 1d 2h 5m)
+- `{guild_count}`
+- `{timestamp}` (UTC)
+
 ## 🏗️ Architecture
 
 The Discord Habit Bot uses a clean domain-driven architecture with well-defined communication patterns between components.
